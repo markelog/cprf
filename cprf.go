@@ -1,4 +1,4 @@
-// Package cprf which represents `cp -rf` logic
+// Package cprf which represents `cp -Rf` logic
 package cprf
 
 import (
