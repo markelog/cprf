@@ -2,10 +2,7 @@
 
 # Cprf
 
-```sh
-cp -rf <path>
-```
-logic
+`cp -rf <path>` logic on Go
 
 ## Installation
 
