@@ -14,7 +14,7 @@ func removeIfExist(path string) error {
 		return os.Remove(path)
 	}
 
-  return nil
+	return nil
 }
 
 func copyDir(path string, mode os.FileMode) error {
@@ -60,9 +60,9 @@ func Copy(src, dst string) error {
 
 		// cp -f
 		err = removeIfExist(dstTemp)
-    if err != nil {
-      return err
-    }
+		if err != nil {
+			return err
+		}
 
 		// File copy
 		_, err = shutil.Copy(path, dstTemp, false)
