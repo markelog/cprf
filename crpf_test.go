@@ -2,8 +2,8 @@ package cprf_test
 
 import (
 	"io/ioutil"
-	"path/filepath"
 	"os"
+	"path/filepath"
 
 	. "github.com/markelog/cprf"
 	. "github.com/onsi/ginkgo"
@@ -13,7 +13,7 @@ import (
 var _ = Describe("Cprf", func() {
 	var (
 		from string
-		to string
+		to   string
 	)
 
 	BeforeEach(func() {
@@ -58,7 +58,7 @@ var _ = Describe("Cprf", func() {
 			to += "/"
 
 			hello := []byte("hello\ngo\n")
-			ioutil.WriteFile(to + "test", hello, 0777)
+			ioutil.WriteFile(to+"test", hello, 0777)
 
 			Copy(from, to)
 		})
@@ -153,16 +153,16 @@ var _ = Describe("Cprf", func() {
 		BeforeEach(func() {
 			from += "/"
 
-			os.MkdirAll(to, 0777);
+			os.MkdirAll(to, 0777)
 			hello := []byte("hello\ngo\n")
-			ioutil.WriteFile(to + "/test", hello, 0777)
+			ioutil.WriteFile(to+"/test", hello, 0777)
 
 			Copy(from, to)
 		})
 
 		AfterEach(func() {
 			os.RemoveAll(to)
-			os.MkdirAll(to, 0777);
+			os.MkdirAll(to, 0777)
 		})
 
 		It("should exist", func() {
