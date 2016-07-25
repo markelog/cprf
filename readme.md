@@ -18,7 +18,7 @@ package main
 import "github.com/markelog/cprf"
 
 func main() {
-  // Will extract sexy turtles to current dir
+  // Will copy sexy turtles to current dir
   cprf.Copy("/sexy-turtles", ".")
 }
 ```
