@@ -5,19 +5,12 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+  "fmt"
 
 	"github.com/termie/go-shutil"
 )
 
-func removeIfExist(path string) error {
-	if _, err := os.Stat(path); err == nil {
-		return os.Remove(path)
-	}
-
-	return nil
-}
-
-func copyDir(path string, mode os.FileMode) error {
+func mkDir(path string, mode os.FileMode) error {
 	if _, err := os.Stat(path); err == nil {
 		return nil
 	}
@@ -55,17 +48,16 @@ func Copy(src, dst string) error {
 
 		// "Copy" directory
 		if stat.IsDir() {
-			return copyDir(dstTemp, stat.Mode())
-		}
-
-		// cp -f
-		err = removeIfExist(dstTemp)
-		if err != nil {
-			return err
+			return mkDir(dstTemp, stat.Mode())
 		}
 
 		// File copy
-		_, err = shutil.Copy(path, dstTemp, false)
+    _, err = shutil.Copy(path, dstTemp, false)
+
+    if err != nil {
+      fmt.Println(err)
+    }
+
 		return err
 	}
 

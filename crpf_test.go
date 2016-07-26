@@ -115,23 +115,6 @@ var _ = Describe("Cprf", func() {
 		})
 	})
 
-	Describe("Copy everything in the folder", func() {
-		BeforeEach(func() {
-			from += "/a/"
-			Copy(from, to)
-		})
-
-		AfterEach(func() {
-			os.RemoveAll(filepath.Join(to + "/b"))
-		})
-
-		It("should exist", func() {
-			data, _ := ioutil.ReadFile(to + "/b/test")
-
-			Ω(string(data)).To(Equal("1\n"))
-		})
-	})
-
 	Describe("Copy directory with hierarchy", func() {
 		BeforeEach(func() {
 			from += "/a"
@@ -151,18 +134,16 @@ var _ = Describe("Cprf", func() {
 
 	Describe("Override existing file", func() {
 		BeforeEach(func() {
-			from += "/"
+			from += "/test"
 
-			os.MkdirAll(to, 0777)
 			hello := []byte("hello\ngo\n")
-			ioutil.WriteFile(to+"/test", hello, 0777)
+			ioutil.WriteFile(to + "/test", hello, 0777)
 
 			Copy(from, to)
 		})
 
 		AfterEach(func() {
-			os.RemoveAll(to)
-			os.MkdirAll(to, 0777)
+			os.RemoveAll(to + "/test")
 		})
 
 		It("should exist", func() {
