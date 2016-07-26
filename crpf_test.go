@@ -137,7 +137,7 @@ var _ = Describe("Cprf", func() {
 			from += "/test"
 
 			hello := []byte("hello\ngo\n")
-			ioutil.WriteFile(to + "/test", hello, 0777)
+			ioutil.WriteFile(to+"/test", hello, 0777)
 
 			Copy(from, to)
 		})

@@ -2,10 +2,10 @@
 package cprf
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
-  "fmt"
 
 	"github.com/termie/go-shutil"
 )
@@ -52,11 +52,11 @@ func Copy(src, dst string) error {
 		}
 
 		// File copy
-    _, err = shutil.Copy(path, dstTemp, false)
+		_, err = shutil.Copy(path, dstTemp, false)
 
-    if err != nil {
-      fmt.Println(err)
-    }
+		if err != nil {
+			fmt.Println(err)
+		}
 
 		return err
 	}
