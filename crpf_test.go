@@ -52,6 +52,23 @@ var _ = Describe("Cprf", func() {
 		})
 	})
 
+	Describe("Override existing symlink in existing folder", func() {
+		BeforeEach(func() {
+			from += "/nested"
+			Copy(from, to)
+		})
+
+		AfterEach(func() {
+			os.RemoveAll(to + "/nested")
+		})
+
+		It("should exist", func() {
+			err := Copy(from+"/symlink", to+"/nested")
+
+			Ω(err).To(BeNil())
+		})
+	})
+
 	Describe("Copy nested and override test file", func() {
 		BeforeEach(func() {
 			from += "/a/b/test"

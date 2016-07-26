@@ -2,21 +2,12 @@
 package cprf
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/termie/go-shutil"
 )
-
-func mkDir(path string, mode os.FileMode) error {
-	if _, err := os.Stat(path); err == nil {
-		return nil
-	}
-
-	return os.Mkdir(path, mode)
-}
 
 // Copy copies yo!
 func Copy(src, dst string) error {
@@ -28,7 +19,11 @@ func Copy(src, dst string) error {
 
 	// Simply copy the file
 	if !stat.IsDir() {
+		// cp -f
+		os.Remove(filepath.Join(dst, stat.Name()))
+
 		_, err = shutil.Copy(src, dst, false)
+
 		return err
 	}
 
@@ -51,15 +46,21 @@ func Copy(src, dst string) error {
 			return mkDir(dstTemp, stat.Mode())
 		}
 
-		// File copy
-		_, err = shutil.Copy(path, dstTemp, false)
+		// cp -f
+		os.Remove(dstTemp)
 
-		if err != nil {
-			fmt.Println(err)
-		}
+		_, err = shutil.Copy(path, dstTemp, false)
 
 		return err
 	}
 
 	return filepath.Walk(src, walk)
+}
+
+func mkDir(path string, mode os.FileMode) error {
+	if _, err := os.Stat(path); err == nil {
+		return nil
+	}
+
+	return os.Mkdir(path, mode)
 }
