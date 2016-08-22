@@ -9,6 +9,10 @@ import (
 	"github.com/termie/go-shutil"
 )
 
+func isSymlink(fi os.FileInfo) bool {
+  return (fi.Mode() & os.ModeSymlink) == os.ModeSymlink
+}
+
 // Copy copies yo!
 func Copy(src, dst string) error {
 	stat, err := os.Stat(src)
@@ -22,7 +26,7 @@ func Copy(src, dst string) error {
 		// cp -f
 		os.Remove(filepath.Join(dst, stat.Name()))
 
-		_, err = shutil.Copy(src, dst, false)
+		err = shutil.CopyFile(src, dst, false)
 
 		return err
 	}
@@ -49,7 +53,7 @@ func Copy(src, dst string) error {
 		// cp -f
 		os.Remove(dstTemp)
 
-		_, err = shutil.Copy(path, dstTemp, false)
+		err = shutil.CopyFile(path, dstTemp, false)
 
 		return err
 	}
