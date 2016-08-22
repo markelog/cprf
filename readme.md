@@ -1,8 +1,6 @@
-[![Build Status](https://travis-ci.org/markelog/cprf.svg)](https://travis-ci.org/markelog/cprf) [![GoDoc](https://godoc.org/github.com/markelog/cprf?status.svg)](https://godoc.org/github.com/markelog/cprf) [![Go Report Card](https://goreportcard.com/badge/github.com/markelog/cprf)](https://goreportcard.com/report/github.com/markelog/cprf)
+# Cprf [![Build Status](https://travis-ci.org/markelog/cprf.svg)](https://travis-ci.org/markelog/cprf) [![GoDoc](https://godoc.org/github.com/markelog/cprf?status.svg)](https://godoc.org/github.com/markelog/cprf) [![Go Report Card](https://goreportcard.com/badge/github.com/markelog/cprf)](https://goreportcard.com/report/github.com/markelog/cprf)
 
-# Cprf
-
-`cp -Rf <path>` logic on Go
+> `cp -Rf <path>` logic on Go
 
 ## Installation
 
