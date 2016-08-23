@@ -188,4 +188,23 @@ var _ = Describe("Cprf", func() {
 			Ω(data).To(Equal("testdata/from/symlink"))
 		})
 	})
+
+  Describe("Copy non-existent symlink", func() {
+    BeforeEach(func() {
+      from += "/non-existent-symlink"
+      to += "/"
+
+      Copy(from, to)
+    })
+
+    AfterEach(func() {
+      os.RemoveAll(to + "non-existent-symlink")
+    })
+
+    It("should exist", func() {
+      data, _ := os.Readlink(to + "non-existent-symlink")
+
+      Ω(data).To(Equal("testdata/from/non-existent-symlink"))
+    })
+  })
 })
