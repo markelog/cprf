@@ -34,16 +34,11 @@ func Copy(src, dst string) error {
   }
 
   walk := func(path string, info os.FileInfo, err error) error {
-    stat, err := os.Lstat(path)
-    if err != nil {
-      return err
-    }
-
     dstTemp := filepath.Join(dst, strings.Replace(path, src, "", 1))
 
     // "Copy" directory
-    if stat.IsDir() {
-      return mkDir(dstTemp, stat.Mode())
+    if info.IsDir() {
+      return mkDir(dstTemp, info.Mode())
     }
 
     // cp -f
