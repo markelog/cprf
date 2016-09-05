@@ -26,11 +26,15 @@ func Copy(src, dst string) error {
 
 	// If the source_file ends in a "/", the
 	// contents of the directory are copied rather than the directory itself
-	if !strings.HasSuffix(src, "/") {
+	if strings.HasSuffix(src, "/") == false {
 		dst = filepath.Join(dst, stat.Name())
 	}
 
 	walk := func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
 		dstTemp := filepath.Join(dst, strings.Replace(path, src, "", 1))
 
 		// "Copy" directory

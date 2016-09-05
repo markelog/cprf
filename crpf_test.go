@@ -1,7 +1,6 @@
 package cprf_test
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -184,7 +183,6 @@ var _ = Describe("Cprf", func() {
 		})
 
 		It("should exist", func() {
-			fmt.Println(to + "symlink")
 			data, _ := os.Readlink(to + "symlink")
 
 			Ω(data).To(Equal("test"))
