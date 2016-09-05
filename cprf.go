@@ -2,60 +2,82 @@
 package cprf
 
 import (
-  "os"
-  "path/filepath"
-  "strings"
+	"os"
+	"path/filepath"
+	"strings"
 
-  "github.com/termie/go-shutil"
+	"github.com/termie/go-shutil"
 )
 
 // Copy copies yo!
 func Copy(src, dst string) error {
-  stat, err := os.Lstat(src)
+	stat, err := os.Lstat(src)
 
-  if err != nil {
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  // Simply copy the file
-  if !stat.IsDir() {
-    // cp -f
-    os.Remove(filepath.Join(dst, stat.Name()))
+	// Simply copy the file if it is not a dir
+	if stat.IsDir() == false {
+		dst = filepath.Join(dst, stat.Name())
 
-    _, err = shutil.Copy(src, dst, false)
+		return copy(src, dst)
+	}
 
-    return err
-  }
+	// If the source_file ends in a "/", the
+	// contents of the directory are copied rather than the directory itself
+	if !strings.HasSuffix(src, "/") {
+		dst = filepath.Join(dst, stat.Name())
+	}
 
-  // If the source_file ends in a "/", the
-  // contents of the directory are copied rather than the directory itself
-  if !strings.HasSuffix(src, "/") {
-    dst = filepath.Join(dst, stat.Name())
-  }
+	walk := func(path string, info os.FileInfo, err error) error {
+		dstTemp := filepath.Join(dst, strings.Replace(path, src, "", 1))
 
-  walk := func(path string, info os.FileInfo, err error) error {
-    dstTemp := filepath.Join(dst, strings.Replace(path, src, "", 1))
+		// "Copy" directory
+		if info.IsDir() {
+			return mkDir(dstTemp, info.Mode())
+		}
 
-    // "Copy" directory
-    if info.IsDir() {
-      return mkDir(dstTemp, info.Mode())
-    }
+		return copy(path, dstTemp)
+	}
 
-    // cp -f
-    os.Remove(dstTemp)
+	return filepath.Walk(src, walk)
+}
 
-    _, err = shutil.Copy(path, dstTemp, false)
+func copy(src, dst string) error {
+	stat, err := os.Lstat(src)
 
-    return err
-  }
+	if err != nil {
+		return err
+	}
 
-  return filepath.Walk(src, walk)
+	// cp -f
+	os.Remove(dst)
+
+	// "Copy" symlinks
+	if shutil.IsSymlink(stat) {
+		return copySymLink(src, dst)
+	}
+
+	_, err = shutil.Copy(src, dst, false)
+
+	return err
+}
+
+// Can't use "shutil" since it absolutize path
+func copySymLink(src, dst string) (err error) {
+	link, err := os.Readlink(src)
+	if err != nil {
+		return err
+	}
+
+	return os.Symlink(link, dst)
 }
 
 func mkDir(path string, mode os.FileMode) error {
-  if _, err := os.Lstat(path); err == nil {
-    return nil
-  }
+	if _, err := os.Lstat(path); err == nil {
+		return nil
+	}
 
-  return os.Mkdir(path, mode)
+	return os.Mkdir(path, mode)
 }

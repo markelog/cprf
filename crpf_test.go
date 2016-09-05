@@ -1,6 +1,7 @@
 package cprf_test
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -105,7 +106,7 @@ var _ = Describe("Cprf", func() {
 		It("should copy symlink", func() {
 			data, _ := os.Readlink(to + "/nested/symlink")
 
-			Ω(data).To(Equal("testdata/from/nested/symlink"))
+			Ω(data).To(Equal("test"))
 		})
 
 		It("should copy file and folder", func() {
@@ -183,28 +184,29 @@ var _ = Describe("Cprf", func() {
 		})
 
 		It("should exist", func() {
+			fmt.Println(to + "symlink")
 			data, _ := os.Readlink(to + "symlink")
 
-			Ω(data).To(Equal("testdata/from/symlink"))
+			Ω(data).To(Equal("test"))
 		})
 	})
 
-  Describe("Copy non-existent symlink", func() {
-    BeforeEach(func() {
-      from += "/non-existent-symlink"
-      to += "/"
+	Describe("Copy non-existent symlink", func() {
+		BeforeEach(func() {
+			from += "/non-existent-symlink"
+			to += "/"
 
-      Copy(from, to)
-    })
+			Copy(from, to)
+		})
 
-    AfterEach(func() {
-      os.RemoveAll(to + "non-existent-symlink")
-    })
+		AfterEach(func() {
+			os.RemoveAll(to + "non-existent-symlink")
+		})
 
-    It("should exist", func() {
-      data, _ := os.Readlink(to + "non-existent-symlink")
+		It("should exist", func() {
+			data, _ := os.Readlink(to + "non-existent-symlink")
 
-      Ω(data).To(Equal("testdata/from/non-existent-symlink"))
-    })
-  })
+			Ω(data).To(Equal("non-existent-symlink"))
+		})
+	})
 })
